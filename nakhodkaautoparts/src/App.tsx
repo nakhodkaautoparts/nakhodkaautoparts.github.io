@@ -12,7 +12,7 @@ import {Layout} from "antd";
 function App() {
     return (
         <Layout style={{height: '100%'}}>
-            <Header style={{paddingInline: 0}}><Navbar/></Header> {/* TODO: better solution for padding */}
+            <Header style={{paddingInline: 0}}><Navbar/></Header> {/* TODO: better solution for padding? maybe fine */}
             <div className="App">
             <Routes>
                 <Route path='/' element={<Home/>}/>

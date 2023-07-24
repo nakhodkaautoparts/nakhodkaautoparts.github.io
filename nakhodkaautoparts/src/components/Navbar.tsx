@@ -24,7 +24,7 @@ const items: MenuProps['items'] = [
 
 const Navbar = () => {
     return (
-        <Menu mode="horizontal" style={{width: '100%'}} items={items}/>
+        <Menu mode="horizontal" items={items}/>
     )
 }
 

@@ -3,7 +3,7 @@ import {Menu} from 'antd';
 
 const Navbar = () => {
     return (
-        <Menu mode="horizontal">
+        <Menu mode="horizontal" style={{position: 'fixed', width: '100%'}}>
             <Menu.Item key="home">
                 Home
             </Menu.Item>

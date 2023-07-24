@@ -1,57 +1,120 @@
-import React, {FC, useState} from 'react';
-import {Dropdown, MenuProps, } from 'antd';
-import {Navbar} from "../components/navbar";
+import React, {useState} from 'react';
+import {Card, Col, Row, Select, Layout} from 'antd';
+import {Content} from "antd/es/layout/layout";
+import Sider from "antd/es/layout/Sider";
 
 type Props = {}
-const Home = ({ } : Props) => {
-    const [selectedModel, setSelectedModel] = useState<Model>({ key: 0, label: 'Models', makes: []})
-    const [selectedMake, setSelectedMake] = useState<Make>({ key: 0, label: 'Makes' })
+const Home = ({}: Props) => {
+    const [selectedModel, setSelectedModel] = useState<Model>({key: 0, label: '', makes: []})
+    const [selectedMake, setSelectedMake] = useState<Make>({key: 0, label: ''})
     const models: Model[] = [
         {
             key: 1,
             label: 'Toyota',
-            makes: [{ key: 1, label: '86'}]
+            makes: [{key: 1, label: '86'}]
         },
         {
             key: 2,
             label: 'Honda',
-            makes: [{ key: 1, label: 'Civic'}]
+            makes: [{key: 1, label: 'Civic'}]
         },
         {
             key: 3,
             label: 'Mazda',
-            makes: [{ key: 1, label: 'RX-6'}]
+            makes: [{key: 1, label: 'RX-6'}]
         },
     ];
 
-    const onModelSelection: MenuProps['onClick'] = (item) => {
-        const model = models.find((model: Model) => model.key === parseInt(item.key));
-        if (model) {
-            setSelectedModel(model);
-            setSelectedMake({ key: 0, label: 'Makes'});
-        }
-    }
-
-    const onMakeSelection: MenuProps['onClick'] = (item) => {
-        const make = selectedModel.makes.find((make: Make) => make.key === parseInt(item.key));
-        if (make) {
-            setSelectedMake(make);
-        }
-    }
+    const galleryItems = [
+        {
+            id: 1,
+            title: 'Item 1',
+            imageUrl: 'https://via.placeholder.com/300x200',
+            description: 'Description for item 1',
+        },
+        {
+            id: 2,
+            title: 'Item 2',
+            imageUrl: 'https://via.placeholder.com/300x200',
+            description: 'Description for item 2',
+        },
+        {
+            id: 3,
+            title: 'Item 3',
+            imageUrl: 'https://via.placeholder.com/300x200',
+            description: 'Description for item 3',
+        },
+        // Add more items as needed
+    ];
 
     return (
-        <div>
-            <div>
-                <Dropdown menu={{ items: models, onClick: onModelSelection }}>
-                    <div>{selectedModel.label}</div>
-                </Dropdown>
-                {!!selectedModel.makes.length && (
-                    <Dropdown menu={{ items: selectedModel.makes, onClick: onMakeSelection }}>
-                        <div>{selectedMake.label}</div>
-                    </Dropdown>
-                )}
-            </div>
-        </div>
+        <Layout style={{paddingTop: '6vh', minHeight: '100%'}}>
+            <Sider width="30%" theme={"light"} style={{
+                boxShadow: '5px 8px 24px 5px rgba(0, 0, 0, 0.1)',
+                borderRadius: '8px',
+                marginLeft: '50px',
+                height: '70vh'
+            }}>
+                <Col style={{padding: "20px"}}>
+                    <Row><label style={{fontSize: '20px', margin: '20px'}}>Select a car</label></Row>
+                    <Row>
+                        <Select
+                            style={{width: '60%', margin: '20px'}}
+                            size={"large"}
+                            placeholder="Select a model"
+                            onChange={(value) => {
+                                setSelectedModel(models.find((model) => model.key === parseInt(value))!);
+                                setSelectedMake({ key: 0, label: '' });
+                            }}
+                            value={selectedModel.label || undefined}
+                        >
+                            {models.map((model) => (
+                                <Select.Option key={model.key} value={model.key}>
+                                    {model.label}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Row>
+                    <Row><label style={{fontSize: '20px', margin: '20px'}}>Select a make</label></Row>
+                    <Row>
+                        <Select
+                            disabled={selectedModel.key === 0}
+                            style={{width: '60%', margin: '20px'}}
+                            size={"large"}
+                            placeholder="Select a make"
+                            onChange={(value) => {
+                                setSelectedMake(selectedModel.makes.find((make) => make.key === parseInt(value))!)
+                            }}
+                            value={selectedMake.label || undefined}
+                        >
+                            {selectedModel.makes.map((make) => (
+                                <Select.Option key={make.key} value={make.key}>
+                                    {make.label}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Row>
+
+                </Col>
+
+            </Sider>
+            <Content style={{padding: '0 50px'}}>
+                <div className="site-layout-content">
+                    <Row gutter={16}>
+                        {galleryItems.map((item) => (
+                            <Col span={8} key={item.id}>
+                                <Card
+                                    hoverable
+                                    cover={<img alt={item.title} src={item.imageUrl}/>}
+                                >
+                                    <Card.Meta title={item.title} description={item.description}/>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
+            </Content>
+        </Layout>
     )
 };
-    export default Home;
+export default Home;

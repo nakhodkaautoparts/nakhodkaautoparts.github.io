@@ -1,15 +1,15 @@
 import React from 'react';
 
-const Home = () => {
+const Contact = () => {
   return (
     <div>
       <header>
         <p>
-          Home
+          Contact
         </p>
       </header>
     </div>
   );
 }
 
-export default Home;
+export default Contact;

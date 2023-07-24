@@ -1,29 +1,30 @@
 import React from 'react';
 import {Menu, MenuProps} from 'antd';
+import {Link} from "react-router-dom";
 
 const items: MenuProps['items'] = [
     {
         key: 'home',
-        label: 'Home',
+        label: <Link to="/">Home</Link>,
     },
     {
         key: 'catalog',
-        label: 'Catalog',
+        label: <Link to="/catalog">Catalog</Link>,
     },
     {
-        key: 'contacts',
-        label: 'Contacts',
+        key: 'contact',
+        label: <Link to="/contact">Contact</Link>,
     },
     {
         key: 'about',
-        label: 'About',
+        label: <Link to="/about">About</Link>,
         style: {marginLeft: 'auto'}
     }
 ];
 
 const Navbar = () => {
     return (
-        <Menu mode="horizontal" style={{position: 'fixed', width: '100%'}} items={items}/>
+        <Menu mode="horizontal" style={{width: '100%'}} items={items}/>
     )
 }
 

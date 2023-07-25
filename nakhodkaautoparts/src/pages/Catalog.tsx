@@ -1,97 +1,16 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {Card, Col, Row, Select, Layout} from 'antd';
-import {Content} from "antd/es/layout/layout";
+import React, { useState } from 'react';
+import { Card, Col, Row, Select, Layout } from 'antd';
+import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import Papa from "papaparse";
+import carData from '../data/car-test.json';
 
-type Props = {}
-const Catalog = ({}: Props) => {
+const Catalog = () => {
     const [selectedModel, setSelectedModel] = useState<Model | undefined>(undefined);
     const [selectedMake, setSelectedMake] = useState<Make | undefined>(undefined);
     const [selectedYear, setSelectedYear] = useState<Year | undefined>(undefined);
     const [selectedEngine, setSelectedEngine] = useState<Engine | undefined>(undefined);
-    const [parsedData, setParsedData] = useState<DataRow[]>([]);
 
-    useEffect(() => {
-        const data = localStorage.getItem('parsedData');
-        const dueTime = localStorage.getItem('dueParsedData');
-        const now = Date.now();
-        if (data && now && dueTime && now <= parseInt(dueTime)) {
-            setParsedData(JSON.parse(data));
-        } else {
-            const csvFilePath = require("../csvs/car-test.csv");
-            Papa.parse(csvFilePath, {
-                header: true,
-                download: true,
-                skipEmptyLines: true,
-                complete: (result: { data: DataRow[] }) => {
-                    setParsedData(result.data);
-                    localStorage.setItem('dueParsedData', (now + (2 * 60 * 60 * 1000)).toString());
-                }
-            });
-        }
-    }, []);
-
-    const models: Model[] = useMemo(() => {
-        const data = localStorage.getItem('models');
-
-        if (data && !!JSON.parse(data).length) {
-            return JSON.parse(data);
-        }
-
-        const models: Model[] = [];
-        parsedData.forEach((row, index) => {
-            const existingModel = models.find(model => model.label === row.Model);
-            if (existingModel) {
-                const existingMake = existingModel.makes.find(make => make.label === row.Make);
-                if (existingMake) {
-                    // Assuming that year and engine is always passed
-                    const existingYear = existingMake.year?.find(year => year.label === row.Year);
-                    const existingEngine = existingMake.engine?.find(engine => engine.label === row.Engine);
-                    if (!existingYear) {
-                        const newYear: Year = {
-                            key: existingMake.year?.length ? existingMake.year.length + 1 : 1,
-                            label: row.Year,
-                        }
-                        existingMake.year?.push(newYear);
-                    }
-
-                    if (!existingEngine) {
-                        const newEngine: Engine = {
-                            key: existingMake.engine?.length ? existingMake.engine.length + 1 : 1,
-                            label: row.Engine,
-                        }
-                        existingMake.engine?.push(newEngine);
-                    }
-                } else {
-                    const newMake: Make = {
-                        key: existingModel.makes.length + 1,
-                        label: row.Make,
-                        year: [{key: 1, label: row.Year}],
-                        engine: [{key: 1, label: row.Engine}],
-                    }
-                    existingModel.makes.push(newMake);
-                }
-            } else {
-                const make: Make = {
-                    key: 1,
-                    label: row.Make,
-                    year: [{key: 1, label: row.Year}],
-                    engine: [{key: 1, label: row.Engine}],
-
-                }
-                const model: Model = {
-                    key: index + 1,
-                    label: row.Model,
-                    makes: [make]
-                }
-                models.push(model);
-            }
-        })
-
-        localStorage.setItem('models', JSON.stringify(models))
-        return models;
-    }, [parsedData]);
+    const models: Model[] = carData;
 
     return (
         <Layout style={{paddingTop: '4vh'}}>

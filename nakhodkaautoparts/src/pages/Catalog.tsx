@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Card, Col, Row, Select, Layout } from 'antd';
 import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import carData from '../data/car-test.json';
+import carData from '../data/car-data.json';
+import parts from '../data/parts.json';
 
 const Catalog = () => {
     const [selectedModel, setSelectedModel] = useState<Model | undefined>(undefined);
@@ -106,13 +107,13 @@ const Catalog = () => {
             <Content style={{padding: '0 50px '}}>
                 <div className="site-layout-content">
                     <Row gutter={16}>
-                        {galleryItems.map((item) => (
-                            <Col span={8} key={item.id}>
+                        {parts.map((item) => (
+                            <Col span={8} key={item}>
                                 <Card
                                     hoverable
-                                    cover={<img alt={item.title} src={item.imageUrl}/>}
+                                    cover={<img alt={item} src={'https://via.placeholder.com/300x200'}/>}
                                 >
-                                    <Card.Meta title={item.title} description={item.description}/>
+                                    <Card.Meta title={item} description={item}  />
                                 </Card>
                             </Col>
                         ))}

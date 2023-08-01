@@ -6,13 +6,13 @@ type DataRow = {
     Vin: string,
 }
 
-type Model = {
+type Make = {
     key: number,
     label: string,
-    makes: Make[]
+    models: Model[]
 };
 
-type Make = {
+type Model = {
     key: number,
     label: string,
     year?: Year[]

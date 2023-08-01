@@ -6,8 +6,8 @@ import carData from '../data/car-data.json';
 import parts from '../data/parts.json';
 
 const Catalog = () => {
-    const [selectedModel, setSelectedModel] = useState<Model | undefined>(undefined);
     const [selectedMake, setSelectedMake] = useState<Make | undefined>(undefined);
+    const [selectedModel, setSelectedModel] = useState<Model | undefined>(undefined);
     const [selectedYear, setSelectedYear] = useState<Year | undefined>(undefined);
     const [selectedEngine, setSelectedEngine] = useState<Engine | undefined>(undefined);
     const [selectedVin, setSelectedVin] = useState<Vin | undefined>(undefined);
@@ -15,17 +15,17 @@ const Catalog = () => {
     const [optionLeftRight, setOptionLeftRight] = useState<RadioOption>({ value: '' });
     const [optionUpDown, setOptionUpDown] = useState<RadioOption>({ value: '' });
 
-    const models: Model[] = carData;
+    const makes: Make[] = carData;
 
     const filteredData = useMemo(() => { // TODO: filter by years and engines
-        if (!selectedModel) return carData;
-        if (!selectedMake) return [selectedModel]
+        if (!selectedMake) return carData;
+        if (!selectedModel) return [selectedMake]
 
-        let temp = {...selectedModel};
-        temp.makes = [selectedMake]; // filter out all makes except the selected one
+        let temp = {...selectedMake};
+        temp.models = [selectedModel]; // filter out all makes except the selected one
         return [temp];
 
-    }, [selectedModel, selectedMake, selectedYear, selectedEngine]);
+    }, [selectedMake, selectedModel, selectedYear, selectedEngine]);
 
 
     const optionsFrontBack = [
@@ -81,14 +81,14 @@ const Catalog = () => {
                             size={"large"}
                             placeholder="Марка"
                             onChange={(value) => {
-                                setSelectedModel(models.find((model) => model.key === parseInt(value))!);
-                                setSelectedMake(undefined);
+                                setSelectedMake(makes.find((make) => make.key === parseInt(value))!);
+                                setSelectedModel(undefined);
                             }}
-                            value={selectedModel?.label || undefined}
+                            value={selectedMake?.label || undefined}
                         >
-                            {models.map((model) => (
-                                <Select.Option key={model.key} value={model.key}>
-                                    {model.label}
+                            {makes.map((make) => (
+                                <Select.Option key={make.key} value={make.key}>
+                                    {make.label}
                                 </Select.Option>
                             ))}
                         </Select>
@@ -96,20 +96,20 @@ const Catalog = () => {
                     <Row><label style={{fontSize: '20px'}}>Модель</label></Row>
                     <Row>
                         <Select
-                            disabled={!selectedModel || selectedModel?.key === 0}
+                            disabled={!selectedMake || selectedMake?.key === 0}
                             style={{width: '60%', margin: '20px'}}
                             size={"large"}
                             placeholder="Модель"
                             onChange={(value) => {
-                                setSelectedMake(selectedModel?.makes.find((make) => make.key === parseInt(value))!)
+                                setSelectedModel(selectedMake?.models.find((model) => model.key === parseInt(value))!)
                                 setSelectedYear(undefined);
                                 setSelectedEngine(undefined);
                             }}
-                            value={selectedMake?.label || undefined}
+                            value={selectedModel?.label || undefined}
                         >
-                            {selectedModel?.makes.map((make) => (
-                                <Select.Option key={make.key} value={make.key}>
-                                    {make.label}
+                            {selectedMake?.models.map((model) => (
+                                <Select.Option key={model.key} value={model.key}>
+                                    {model.label}
                                 </Select.Option>
                             ))}
                         </Select>
@@ -117,16 +117,16 @@ const Catalog = () => {
                     <Row><label style={{fontSize: '20px'}}>Год</label></Row>
                     <Row>
                         <Select
-                            disabled={!selectedMake || selectedMake?.key === 0}
+                            disabled={!selectedModel || selectedModel?.key === 0}
                             style={{width: '60%', margin: '20px'}}
                             size={"large"}
                             placeholder="Год"
                             onChange={(value) => {
-                                setSelectedYear(selectedMake?.year?.find((year) => year.key === parseInt(value))!)
+                                setSelectedYear(selectedModel?.year?.find((year) => year.key === parseInt(value))!)
                             }}
                             value={selectedYear?.label || undefined}
                         >
-                            {selectedMake?.year?.map((year) => (
+                            {selectedModel?.year?.map((year) => (
                                 <Select.Option key={year.key} value={year.key}>
                                     {year.label}
                                 </Select.Option>
@@ -138,16 +138,16 @@ const Catalog = () => {
                             <Row><label style={{fontSize: '20px'}}>Кузов</label></Row>
                             <Row>
                                 <Select
-                                    disabled={!selectedMake || selectedMake?.key === 0}
+                                    disabled={!selectedModel || selectedModel?.key === 0}
                                     style={{width: '60%', margin: '20px'}}
                                     size={"large"}
                                     placeholder="Кузов"
                                     onChange={(value) => {
-                                        setSelectedVin(selectedMake?.vin?.find((vin) => vin.key === parseInt(value))!)
+                                        setSelectedVin(selectedModel?.vin?.find((vin) => vin.key === parseInt(value))!)
                                     }}
                                     value={selectedVin?.label || undefined}
                                 >
-                                    {selectedMake?.vin?.map((vin) => (
+                                    {selectedModel?.vin?.map((vin) => (
                                         <Select.Option key={vin.key} value={vin.key}>
                                             {vin.label}
                                         </Select.Option>
@@ -159,16 +159,16 @@ const Catalog = () => {
                             <Row><label style={{fontSize: '20px'}}>Двигатель</label></Row>
                             <Row>
                                 <Select
-                                    disabled={!selectedMake || selectedMake?.key === 0}
+                                    disabled={!selectedModel || selectedModel?.key === 0}
                                     style={{width: '60%', margin: '20px'}}
                                     size={"large"}
                                     placeholder="Двигатель"
                                     onChange={(value) => {
-                                        setSelectedEngine(selectedMake?.engine?.find((engine) => engine.key === parseInt(value))!)
+                                        setSelectedEngine(selectedModel?.engine?.find((engine) => engine.key === parseInt(value))!)
                                     }}
                                     value={selectedEngine?.label || undefined}
                                 >
-                                    {selectedMake?.engine?.map((engine) => (
+                                    {selectedModel?.engine?.map((engine) => (
                                         <Select.Option key={engine.key} value={engine.key}>
                                             {engine.label}
                                         </Select.Option>
@@ -211,13 +211,13 @@ const Catalog = () => {
                     <Row gutter={16}>
                         {filteredData.map((item) => (
                             <React.Fragment key={`${item.label}-${item.key}`}>
-                                {item.makes.map((make) => (
-                                    <Col span={8} key={`${make.label}${make.key}`}>
+                                {item.models.map((model) => (
+                                    <Col span={8} key={`${model.label}${model.key}`}>
                                         <Card
                                             hoverable
-                                            cover={<img alt={make.label} src={'https://via.placeholder.com/300x200'}/>}
+                                            cover={<img alt={model.label} src={'https://via.placeholder.com/300x200'}/>}
                                         >
-                                            <Card.Meta title={item.label} description={make.label}  />
+                                            <Card.Meta title={item.label} description={model.label}  />
                                         </Card>
                                     </Col>
                                 ))}

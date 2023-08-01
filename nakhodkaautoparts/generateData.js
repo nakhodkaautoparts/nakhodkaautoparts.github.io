@@ -18,7 +18,7 @@ const models= [];
 parsedCarData.forEach((row, index) => {
     const existingMake = models.find(model => model.label === row.Make.toUpperCase().trim());
     if (existingMake) {
-        const existingModel = existingMake.makes.find(make => make.label === row.Model.toUpperCase().trim());
+        const existingModel = existingMake.models.find(make => make.label === row.Model.toUpperCase().trim());
         if (existingModel) {
             // Assuming that year and engine is always passed
             const existingYear = existingModel.year?.find(year => year.label === row.Year);
@@ -40,13 +40,13 @@ parsedCarData.forEach((row, index) => {
             }
         } else {
             const newModel = {
-                key: existingMake.makes.length + 1,
+                key: existingMake.models.length + 1,
                 label: row.Model.toUpperCase().trim(),
                 year: [{key: 1, label: row.Year}],
                 engine: [{key: 1, label: row.Engine}],
                 vin: [{key: 1, label: row.Vin}],
             }
-            existingMake.makes.push(newModel);
+            existingMake.models.push(newModel);
         }
     } else {
         const make = {
@@ -59,7 +59,7 @@ parsedCarData.forEach((row, index) => {
         const model = {
             key: index + 1,
             label: row.Make.toUpperCase().trim(),
-            makes: [make]
+            models: [make]
         }
 
         models.push(model);

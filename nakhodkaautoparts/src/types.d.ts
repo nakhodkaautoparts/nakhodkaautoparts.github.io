@@ -3,6 +3,7 @@ type DataRow = {
     Make: string,
     Year: string,
     Engine: string,
+    Vin: string,
 }
 
 type Model = {
@@ -16,6 +17,7 @@ type Make = {
     label: string,
     year?: Year[]
     engine?: Engine[]
+    vin?: Vin[]
 };
 
 type Year = {
@@ -26,4 +28,13 @@ type Year = {
 type Engine = {
     key: number,
     label: string,
+}
+
+type Vin = {
+    key: number,
+    label: string,
+}
+
+type RadioOption = {
+    value: string,
 }

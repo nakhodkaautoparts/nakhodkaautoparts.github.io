@@ -16,49 +16,49 @@ papa.parse(content, {
 
 const models= [];
 parsedCarData.forEach((row, index) => {
-    console.log(row);
-    const existingModel = models.find(model => model.label === row.Model.toUpperCase().trim());
-    if (existingModel) {
-        const existingMake = existingModel.makes.find(make => make.label === row.Make.toUpperCase().trim());
-        if (existingMake) {
+    const existingMake = models.find(model => model.label === row.Make.toUpperCase().trim());
+    if (existingMake) {
+        const existingModel = existingMake.makes.find(make => make.label === row.Model.toUpperCase().trim());
+        if (existingModel) {
             // Assuming that year and engine is always passed
-            const existingYear = existingMake.year?.find(year => year.label === row.Year);
-            const existingEngine = existingMake.engine?.find(engine => engine.label === row.Engine.toUpperCase().trim());
+            const existingYear = existingModel.year?.find(year => year.label === row.Year);
+            const existingEngine = existingModel.engine?.find(engine => engine.label === row.Engine.toUpperCase().trim());
             if (!existingYear) {
                 const newYear = {
-                    key: existingMake.year?.length ? existingMake.year.length + 1 : 1,
+                    key: existingModel.year?.length ? existingModel.year.length + 1 : 1,
                     label: row.Year,
                 }
-                existingMake.year?.push(newYear);
+                existingModel.year?.push(newYear);
             }
 
             if (!existingEngine) {
                 const newEngine = {
-                    key: existingMake.engine?.length ? existingMake.engine.length + 1 : 1,
+                    key: existingModel.engine?.length ? existingModel.engine.length + 1 : 1,
                     label: row.Engine.toUpperCase().trim(),
                 }
-                existingMake.engine?.push(newEngine);
+                existingModel.engine?.push(newEngine);
             }
         } else {
-            const newMake = {
-                key: existingModel.makes.length + 1,
-                label: row.Make.toUpperCase().trim(),
+            const newModel = {
+                key: existingMake.makes.length + 1,
+                label: row.Model.toUpperCase().trim(),
                 year: [{key: 1, label: row.Year}],
                 engine: [{key: 1, label: row.Engine}],
+                vin: [{key: 1, label: row.Vin}],
             }
-            existingModel.makes.push(newMake);
+            existingMake.makes.push(newModel);
         }
     } else {
         const make = {
             key: 1,
-            label: row.Make.toUpperCase().trim(),
+            label: row.Model.toUpperCase().trim(),
             year: [{key: 1, label: row.Year}],
             engine: [{key: 1, label: row.Engine}],
-
+            vin: [{key: 1, label: row.Vin }],
         }
         const model = {
             key: index + 1,
-            label: row.Model.toUpperCase().trim(),
+            label: row.Make.toUpperCase().trim(),
             makes: [make]
         }
 

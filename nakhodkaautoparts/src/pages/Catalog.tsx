@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, {useMemo, useState} from 'react';
 import { Card, Col, Row, Select, Layout } from 'antd';
 import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import carData from '../data/car-data.json';
-import parts from '../data/parts.json';
 
 const Catalog = () => {
     const [selectedModel, setSelectedModel] = useState<Model | undefined>(undefined);
@@ -12,6 +11,17 @@ const Catalog = () => {
     const [selectedEngine, setSelectedEngine] = useState<Engine | undefined>(undefined);
 
     const models: Model[] = carData;
+
+    const filteredData = useMemo(() => { // TODO: filter by years and engines
+        if (!selectedModel) return carData;
+        if (!selectedMake) return [selectedModel]
+
+        let temp = {...selectedModel};
+        temp.makes = [selectedMake]; // filter out all makes except the selected one
+        return [temp];
+
+    }, [selectedModel, selectedMake, selectedYear, selectedEngine]);
+
 
     return (
         <Layout style={{paddingTop: '4vh'}}>
@@ -30,7 +40,7 @@ const Catalog = () => {
                             placeholder="Select a model"
                             onChange={(value) => {
                                 setSelectedModel(models.find((model) => model.key === parseInt(value))!);
-                                setSelectedMake({key: 0, label: ''});
+                                setSelectedMake(undefined);
                             }}
                             value={selectedModel?.label || undefined}
                         >
@@ -107,15 +117,19 @@ const Catalog = () => {
             <Content style={{padding: '0 50px '}}>
                 <div className="site-layout-content">
                     <Row gutter={16}>
-                        {parts.map((item) => (
-                            <Col span={8} key={item}>
-                                <Card
-                                    hoverable
-                                    cover={<img alt={item} src={'https://via.placeholder.com/300x200'}/>}
-                                >
-                                    <Card.Meta title={item} description={item}  />
-                                </Card>
-                            </Col>
+                        {filteredData.map((item) => (
+                            <React.Fragment key={`${item.label}-${item.key}`}>
+                                {item.makes.map((make) => (
+                                    <Col span={8} key={`${make.label}${make.key}`}>
+                                        <Card
+                                            hoverable
+                                            cover={<img alt={make.label} src={'https://via.placeholder.com/300x200'}/>}
+                                        >
+                                            <Card.Meta title={item.label} description={make.label}  />
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </React.Fragment>
                         ))}
                     </Row>
                 </div>
@@ -124,25 +138,3 @@ const Catalog = () => {
     )
 };
 export default Catalog;
-
-const galleryItems = [
-    {
-        id: 1,
-        title: 'Item 1',
-        imageUrl: 'https://via.placeholder.com/300x200',
-        description: 'Description for item 1',
-    },
-    {
-        id: 2,
-        title: 'Item 2',
-        imageUrl: 'https://via.placeholder.com/300x200',
-        description: 'Description for item 2',
-    },
-    {
-        id: 3,
-        title: 'Item 3',
-        imageUrl: 'https://via.placeholder.com/300x200',
-        description: 'Description for item 3',
-    },
-    // Add more items as needed
-];

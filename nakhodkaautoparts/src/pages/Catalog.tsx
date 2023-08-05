@@ -209,15 +209,15 @@ const Catalog = () => {
             <Content style={{padding: '0 50px '}}>
                 <div className="site-layout-content">
                     <Row gutter={16}>
-                        {filteredData.map((item) => (
-                            <React.Fragment key={`${item.label}-${item.key}`}>
-                                {item.models.map((model) => (
+                        {filteredData.map((make) => ( // TODO: for every year and engine
+                            <React.Fragment key={`${make.label}-${make.key}`}>
+                                {make.models.map((model) => (
                                     <Col span={8} key={`${model.label}${model.key}`}>
                                         <Card
                                             hoverable
                                             cover={<img alt={model.label} src={'https://via.placeholder.com/300x200'}/>}
                                         >
-                                            <Card.Meta title={item.label} description={model.label}  />
+                                            <Card.Meta title={make.label} description={model.label}  />
                                         </Card>
                                     </Col>
                                 ))}

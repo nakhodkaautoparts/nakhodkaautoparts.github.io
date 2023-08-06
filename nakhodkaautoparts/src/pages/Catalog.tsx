@@ -4,9 +4,15 @@ import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import carData from '../data/car-data.json';
 import parts from '../data/parts.json';
+import {useLocation} from "react-router-dom";
+import queryString from 'query-string';
 
 const Catalog = () => {
-    const [selectedMake, setSelectedMake] = useState<Make | undefined>(undefined);
+    const location = useLocation();
+    const keys = Object.keys(queryString.parse(location.search));
+    const makes: Make[] = carData;
+
+    const [selectedMake, setSelectedMake] = useState<Make | undefined>(makes.find((make) => keys.includes(make.label.toLowerCase())) || undefined);
     const [selectedModel, setSelectedModel] = useState<Model | undefined>(undefined);
     const [selectedYear, setSelectedYear] = useState<Year | undefined>(undefined);
     const [selectedEngine, setSelectedEngine] = useState<Engine | undefined>(undefined);
@@ -14,8 +20,6 @@ const Catalog = () => {
     const [optionFrontBack, setOptionFrontBack] = useState<RadioOption>({ value: '' });
     const [optionLeftRight, setOptionLeftRight] = useState<RadioOption>({ value: '' });
     const [optionUpDown, setOptionUpDown] = useState<RadioOption>({ value: '' });
-
-    const makes: Make[] = carData;
 
     const filteredData = useMemo(() => { // TODO: filter by years and engines
         if (!selectedMake) return carData;
@@ -207,17 +211,15 @@ const Catalog = () => {
                 </Col>
             </Sider>
             <Content style={{padding: '0 50px '}}>
+                <h2>Модели</h2>
                 <div className="site-layout-content">
                     <Row gutter={16}>
                         {filteredData.map((make) => ( // TODO: for every year and engine
                             <React.Fragment key={`${make.label}-${make.key}`}>
                                 {make.models.map((model) => (
                                     <Col span={8} key={`${model.label}${model.key}`}>
-                                        <Card
-                                            hoverable
-                                            cover={<img alt={model.label} src={'https://via.placeholder.com/300x200'}/>}
-                                        >
-                                            <Card.Meta title={make.label} description={model.label}  />
+                                        <Card title={make.label}>
+                                            <Card.Meta description={model.label} />
                                         </Card>
                                     </Col>
                                 ))}
@@ -225,18 +227,12 @@ const Catalog = () => {
                         ))}
                     </Row>
                 </div>
-            </Content>
-            <Content style={{padding: '0 50px '}}>
+                <h2>Запчасти</h2>
                 <div className="site-layout-content">
                     <Row gutter={16}>
                         {filteredParts.map((item) => (
                             <Col span={8} key={item}>
-                                <Card
-                                    hoverable
-                                    cover={<img alt={item} src={'https://via.placeholder.com/300x200'}/>}
-                                >
-                                    <Card.Meta title={item} description={item}  />
-                                </Card>
+                                <p>{item}</p>
                             </Col>
                         ))}
                     </Row>

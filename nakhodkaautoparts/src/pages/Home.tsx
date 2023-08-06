@@ -1,28 +1,65 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import React from 'react';
-import {Layout} from "antd";
-import {Content} from "antd/es/layout/layout";
-import {MapContainer, Marker, Popup, TileLayer, useMap} from 'react-leaflet'
+import { Layout } from "antd";
+import { Content } from "antd/es/layout/layout";
+
+import { Link } from "react-router-dom";
 import 'leaflet/dist/leaflet.css';
+
 import './Home.css';
+import Map from "../components/Map";
+import carData from '../data/car-data.json';
 
 const Home = () => {
     return (
-        <Layout>
-            <Content>
-                <MapContainer center={[42.857728752464155, 132.9592723961369]} zoom={16} scrollWheelZoom={false} style={{ width: "100%", height: "calc(100vh - 6rem)" }}>
-                    <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker position={[42.857728752464155, 132.9592723961369]}>
-                        <Popup>
-                            A pretty CSS3 popup. <br/> Easily customizable.
-                        </Popup>
-                    </Marker>
-                </MapContainer>
+        <Layout css={layoutStyle}>
+            <Content css={contentStyle}>
+                <div css={partsContainerStyle}>
+                    <Link to={'/catalog'}>Каталог запчастей</Link>
+                    <div css={carLabelsContainerStyle}>
+                        {carData.map(car => (
+                            <Link key={car.label} to={`/catalog?${car.label.toLowerCase()}`}>{car.label}</Link>
+                        ))}
+                    </div>
+                </div>
+                <div>
+                    <p>
+                        Для того чтобы мы могли оказать Вам услуги Вашего автомобиля, необходимо позвонить нам по контактным
+                        телефонам и согласовать время прибытия.
+                    </p>
+                    <Map />
+                </div>
             </Content>
         </Layout>
     );
 }
 
 export default Home;
+
+const layoutStyle = css`
+  height: 100%;
+`;
+
+const contentStyle = css`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const partsContainerStyle = css`
+  padding-top: 50px;
+`;
+
+const carLabelsContainerStyle = css`
+  display: grid;
+  grid-template: "a a a";
+  a {
+    color: black;
+    text-decoration: underline;
+    :hover {
+      color: #1677ff;
+    }
+  }
+`;

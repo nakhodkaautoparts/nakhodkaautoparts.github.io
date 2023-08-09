@@ -10,10 +10,14 @@ import 'leaflet/dist/leaflet.css';
 import './Home.css';
 import Map from "../components/Map";
 import carData from '../data/car-data.json';
+import {Helmet} from "react-helmet";
 
 const Home = () => {
     return (
         <Layout css={layoutStyle}>
+            <Helmet>
+                <title>Автозапчасти в Находке</title>
+            </Helmet>
             <Content css={contentStyle}>
                 <div css={partsContainerStyle}>
                     <Link to={'/catalog'}>Каталог запчастей</Link>

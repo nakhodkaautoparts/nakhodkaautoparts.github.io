@@ -10,6 +10,7 @@ import Search from "antd/es/input/Search";
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react'
 import Fuse from 'fuse.js'
+import { Helmet } from 'react-helmet';
 
 const Catalog = () => {
     const location = useLocation();
@@ -84,6 +85,9 @@ const Catalog = () => {
 
     return (
         <Layout style={{paddingTop: '4vh'}}>
+            <Helmet>
+                <title>Каталог - Автозапчасти в Находке</title>
+            </Helmet>
             <Sider width="30%" theme={"light"} style={{
                 boxShadow: '5px 8px 24px 5px rgba(0, 0, 0, 0.1)',
                 borderRadius: '8px',

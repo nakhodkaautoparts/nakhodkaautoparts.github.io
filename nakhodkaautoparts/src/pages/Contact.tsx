@@ -2,10 +2,14 @@ import React from 'react';
 import Map from "../components/Map";
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { Helmet } from 'react-helmet';
 
 const Contact = () => {
   return (
     <div>
+        <Helmet>
+            <title>Связаться с нами - Автозапчасти в Находке</title>
+        </Helmet>
         <div css={detailsContainerStyle}>
             <div css={phoneContainerStyle}>
                 <div>

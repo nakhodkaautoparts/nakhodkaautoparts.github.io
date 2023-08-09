@@ -55,6 +55,11 @@ const partsContainerStyle = css`
 const carLabelsContainerStyle = css`
   display: grid;
   grid-template: "a a a";
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  
   a {
     color: black;
     text-decoration: underline;

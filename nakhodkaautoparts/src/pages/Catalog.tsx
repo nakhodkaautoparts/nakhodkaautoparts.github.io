@@ -1,16 +1,24 @@
-import React, { useMemo, useState } from 'react';
-import { Card, Col, Row, Select, Layout, Radio } from 'antd';
-import { Content } from "antd/es/layout/layout";
+import React, {useMemo, useState} from 'react';
+import {Card, Col, Layout, Radio, Row, Select} from 'antd';
+import {Content} from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import carData from '../data/car-data.json';
 import parts from '../data/parts.json';
 import {useLocation} from "react-router-dom";
 import queryString from 'query-string';
+import Search from "antd/es/input/Search";
+/** @jsxImportSource @emotion/react */
+import {css} from '@emotion/react'
+import Fuse from 'fuse.js'
 
 const Catalog = () => {
     const location = useLocation();
     const keys = Object.keys(queryString.parse(location.search));
     const makes: Make[] = carData;
+    const fuseOptions = {
+        isCaseSensitive: false,
+        threshold: 0.3,
+    };
 
     const [selectedMake, setSelectedMake] = useState<Make | undefined>(makes.find((make) => keys.includes(make.label.toLowerCase())) || undefined);
     const [selectedModel, setSelectedModel] = useState<Model | undefined>(undefined);
@@ -20,6 +28,7 @@ const Catalog = () => {
     const [optionFrontBack, setOptionFrontBack] = useState<RadioOption>({ value: '' });
     const [optionLeftRight, setOptionLeftRight] = useState<RadioOption>({ value: '' });
     const [optionUpDown, setOptionUpDown] = useState<RadioOption>({ value: '' });
+    const [filterOption, setFilterOption] = useState<string>('');
 
     const filteredData = useMemo(() => { // TODO: filter by years and engines
         if (!selectedMake) return carData;
@@ -66,8 +75,12 @@ const Catalog = () => {
             const rv = new RegExp(optionLeftRight.value, '');
             newParts = newParts.filter(part => part.match(rv))
         }
+        if (filterOption) {
+            const fuse = new Fuse(newParts, fuseOptions);
+            newParts = fuse.search(filterOption).map(item => item.item);
+        }
         return newParts;
-    }, [optionUpDown, optionFrontBack, optionLeftRight]);
+    }, [optionUpDown, optionFrontBack, optionLeftRight, filterOption]);
 
     return (
         <Layout style={{paddingTop: '4vh'}}>
@@ -227,12 +240,21 @@ const Catalog = () => {
                         ))}
                     </Row>
                 </div>
-                <h2>Запчасти</h2>
+                <div css={partsHeaderStyle}>
+                    <h2>Запчасти</h2>
+                    <Search
+                        placeholder="Поиск запчастей"
+                        size="middle"
+                        onSearch={(value: string, e: React.ChangeEvent |React.KeyboardEvent | React.MouseEvent|undefined) => {setFilterOption(value)}}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {setFilterOption(event.target.value)}}
+                    />
+                </div>
+
                 <div className="site-layout-content">
                     <Row gutter={16}>
                         {filteredParts.map((item) => (
                             <Col span={8} key={item}>
-                                <p>{item}</p>
+                                <p css={partLabelStyle}>{item}</p>
                             </Col>
                         ))}
                     </Row>
@@ -242,3 +264,17 @@ const Catalog = () => {
     )
 };
 export default Catalog;
+
+const partsHeaderStyle = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  > span {
+    width: 250px;
+  }
+`;
+
+const partLabelStyle = css`
+  text-transform: capitalize;
+`;

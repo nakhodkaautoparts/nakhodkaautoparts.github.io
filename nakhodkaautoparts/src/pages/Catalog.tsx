@@ -230,7 +230,7 @@ const Catalog = () => {
             </div>
             <Content css={rightSectionStyle}>
                 <h2>Модели</h2>
-                <div className="site-layout-content">
+                <div className="site-layout-content" css={modelsContainerStyle}>
                     <Row gutter={16}>
                         {filteredData.map((make) => ( // TODO: for every year and engine
                             <React.Fragment key={`${make.label}-${make.key}`}>
@@ -363,5 +363,17 @@ const radioStyle = css`
   >label {
     flex-grow: 1;
     flex-basis: 0;
+  }
+`;
+
+const modelsContainerStyle = css`
+  > div {
+    @media (max-width: 600px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+       > div {
+         max-width: 100%;
+       }
+    }
   }
 `;

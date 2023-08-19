@@ -11,7 +11,7 @@ const Map = () => {
     const defaultIcon = L.icon({
         iconUrl: "https://unpkg.com/leaflet@1.0.3/dist/images/marker-icon.png",
         iconSize: [20, 30],
-        iconAnchor: [18, 18],
+        iconAnchor: [10.5, 24],
         popupAnchor: [0, -10],
         shadowSize: [0, 0],
         shadowAnchor: [10, 10]

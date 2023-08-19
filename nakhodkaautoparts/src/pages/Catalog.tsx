@@ -255,7 +255,7 @@ const Catalog = () => {
                     />
                 </div>
 
-                <div className="site-layout-content">
+                <div className="site-layout-content" css={modelsContainerStyle}>
                     <Row gutter={16}>
                         {filteredParts.map((item) => (
                             <Col span={8} key={item}>
@@ -277,6 +277,7 @@ const partsHeaderStyle = css`
   
   > span {
     width: 250px;
+    padding-left: 20px;
   }
 `;
 

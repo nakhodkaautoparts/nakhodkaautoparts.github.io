@@ -54,6 +54,9 @@ const contentStyle = css`
 
 const partsContainerStyle = css`
   padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const carLabelsContainerStyle = css`

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Card, Col, Layout, Radio, Row, Select} from 'antd';
 import {Content} from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
@@ -16,10 +16,6 @@ const Catalog = () => {
     const location = useLocation();
     const keys = Object.keys(queryString.parse(location.search));
     const makes: Make[] = carData;
-    const fuseOptions = {
-        isCaseSensitive: false,
-        threshold: 0.3,
-    };
 
     const [selectedMake, setSelectedMake] = useState<Make | undefined>(makes.find((make) => keys.includes(make.label.toLowerCase())) || undefined);
     const [selectedModel, setSelectedModel] = useState<Model | undefined>(undefined);
@@ -39,7 +35,7 @@ const Catalog = () => {
         temp.models = [selectedModel]; // filter out all makes except the selected one
         return [temp];
 
-    }, [selectedMake, selectedModel, selectedYear, selectedEngine]);
+    }, [selectedMake, selectedModel]);
 
 
     const optionsFrontBack = [
@@ -77,6 +73,10 @@ const Catalog = () => {
             newParts = newParts.filter(part => part.match(rv))
         }
         if (filterOption) {
+            const fuseOptions = {
+                isCaseSensitive: false,
+                threshold: 0.3,
+            };
             const fuse = new Fuse(newParts, fuseOptions);
             newParts = fuse.search(filterOption).map(item => item.item);
         }

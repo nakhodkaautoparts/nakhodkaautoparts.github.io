@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import L, {marker} from "leaflet";
+import L from "leaflet";
 import { ReactComponent as Phone} from "../icons/phone.svg";
 import { ReactComponent as Pin} from "../icons/pin-address.svg";
 /** @jsxImportSource @emotion/react */

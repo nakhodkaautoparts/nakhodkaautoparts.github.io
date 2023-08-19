@@ -1,19 +1,19 @@
 {
-  "short_name": "Nakhodka Auto Parts",
-  "name": "Nakhodka Auto Parts",
+  "short_name": "Автозапчасти в Находке",
+  "name": "Автозапчасти в Находке",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "chassis.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "chassis.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "chassis.png",
       "type": "image/png",
       "sizes": "512x512"
     }

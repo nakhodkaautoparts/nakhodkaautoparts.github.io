@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import L from "leaflet";
+import L, {marker} from "leaflet";
 import { ReactComponent as Phone} from "../icons/phone.svg";
 import { ReactComponent as Pin} from "../icons/pin-address.svg";
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 
 const Map = () => {
+    const [isReady, setIsReady] = useState(false);
     const defaultIcon = L.icon({
         iconUrl: "https://unpkg.com/leaflet@1.0.3/dist/images/marker-icon.png",
         iconSize: [20, 30],
@@ -15,6 +16,13 @@ const Map = () => {
         shadowSize: [0, 0],
         shadowAnchor: [10, 10]
     });
+    const markerRef = useRef<any>();
+
+    useEffect(() => {
+        if (isReady) {
+            markerRef.current.openPopup();
+        }
+    }, [isReady]);
 
     return (
         <MapContainer
@@ -30,6 +38,10 @@ const Map = () => {
             <Marker
                 position={[42.857728752464155, 132.9592723961369]}
                 icon={defaultIcon}
+                ref={r => {
+                    markerRef.current = r;
+                    setIsReady(true);
+                }}
             >
                 <Popup>
                     <div>
@@ -71,7 +83,7 @@ const pinIconStyle = css`
   path {
     fill: #858585;
   }
-`
+`;
 
 const phoneIconStyle = css`
   width: 20px;
@@ -80,4 +92,4 @@ const phoneIconStyle = css`
   path {
     fill: #858585;
   }
-`
+`;

@@ -26,24 +26,23 @@ const PATHS_TO_PAGES = [
 function App() {
     const [isSet, setIsSet] = useState(false);
     const location = useLocation();
-    const isProd = window.location.protocol !== 'http:';
 
     useEffect(() => {
-        if (isProd && !isSet && process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
+        if (!isSet && process.env.REACT_APP_GOOGLE_ANALYTICS_ID) {
             ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID);
             setIsSet(true);
         }
-    }, [isSet, isProd]);
+    }, [isSet]);
 
     useEffect(() => {
-        if (isProd && isSet) {
+        if (isSet) {
             ReactGA.send({
                 hitType: "pageview",
                 page: location.pathname,
                 title: PATHS_TO_PAGES.find(path => path.path === location.pathname)?.title
             });
         }
-    }, [isProd, isSet, location]);
+    }, [isSet, location]);
 
     return (
         <Layout style={{height: '100%'}}>

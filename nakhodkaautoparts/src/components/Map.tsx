@@ -55,9 +55,15 @@ const Map = () => {
                         </div>
                         <div css={phoneContainerStyle}>
                             <Phone css={phoneIconStyle} />
-                            <a href="tel:+74236634372">
-                                +7 (4236) 63-43-72
-                            </a>
+                            <div>
+                                <a href="tel:+74236634372">
+                                    +7 (4236) 63-43-72
+                                </a>
+                                <br />
+                                <a href="tel:+79147091886">
+                                    +7 (914) 709-18-86
+                                </a>
+                            </div>
                         </div>
                         <div>
                             Часы работы:
@@ -76,6 +82,7 @@ export default Map;
 const phoneContainerStyle = css`
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 const pinIconStyle = css`

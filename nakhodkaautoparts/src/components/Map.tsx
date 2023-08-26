@@ -1,8 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
-import { ReactComponent as Phone} from "../icons/phone.svg";
-import { ReactComponent as Pin} from "../icons/pin-address.svg";
+import { ReactComponent as Phone } from "../icons/phone.svg";
+import { ReactComponent as Pin } from "../icons/pin-address.svg";
+import { ReactComponent as Link } from "../icons/link.svg";
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 
@@ -56,14 +57,20 @@ const Map = () => {
                         <div css={phoneContainerStyle}>
                             <Phone css={phoneIconStyle} />
                             <div>
-                                <a href="tel:+74236634372">
+                                <a href="tel:+74236634372" css={linkStyle}>
                                     +7 (4236) 63-43-72
                                 </a>
                                 <br />
-                                <a href="tel:+79147091886">
+                                <a href="tel:+79147091886" css={linkStyle}>
                                     +7 (914) 709-18-86
                                 </a>
                             </div>
+                        </div>
+                        <div css={phoneContainerStyle}>
+                            <Link css={linkIconStyle} />
+                            <a href={"https://www.farpost.ru/user/autorazborkakpd"} css={linkStyle}>
+                                Найдите нас на Фарпосте
+                            </a>
                         </div>
                         <div>
                             Часы работы:
@@ -96,6 +103,18 @@ const phoneIconStyle = css`
   width: 20px;
   height: 20px;
 
+  path {
+    fill: #858585;
+  }
+`;
+
+const linkStyle = css`
+    :hover {
+      text-decoration: underline;
+    }
+`;
+
+const linkIconStyle = css`
   path {
     fill: #858585;
   }

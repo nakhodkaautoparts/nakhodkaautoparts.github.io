@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
+import { css } from '@emotion/react';
 import React from 'react';
 import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
@@ -28,7 +28,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div>
-                    <p>
+                    <p css={descriptionStyle}>
                         Для того чтобы мы могли оказать Вам услуги Вашего автомобиля, необходимо позвонить нам по контактным
                         телефонам и согласовать время прибытия.
                     </p>
@@ -65,7 +65,15 @@ const carLabelsContainerStyle = css`
   width: 50%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
+  margin-top: 20px;
+  row-gap: 10px;
+
+  @media (max-width: 568px) {
+    width: unset;
+    margin-left: 0;
+    margin-right: 0;
+    gap: 20px;
+  }
   
   a {
     color: black;
@@ -74,4 +82,9 @@ const carLabelsContainerStyle = css`
       color: #1677ff;
     }
   }
+`;
+
+const descriptionStyle = css`
+  margin-right: 10px;
+  margin-left: 10px;
 `;

@@ -56,11 +56,10 @@ const Map = () => {
                         </div>
                         <div css={phoneContainerStyle}>
                             <Phone css={phoneIconStyle} />
-                            <div>
+                            <div css={phoneWrapperStyle}>
                                 <a href="tel:+74236634372" css={linkStyle}>
                                     +7 (4236) 63-43-72
                                 </a>
-                                <br />
                                 <a href="tel:+79147091886" css={linkStyle}>
                                     +7 (914) 709-18-86
                                 </a>
@@ -90,6 +89,11 @@ const phoneContainerStyle = css`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+`;
+
+const phoneWrapperStyle = css`
+  display: grid;
+  row-gap: 10px;
 `;
 
 const pinIconStyle = css`
